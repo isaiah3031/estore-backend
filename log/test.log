@@ -1,0 +1,1161 @@
+  [1m[35m (58.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (43.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3658593233296589490)[0m
+  [1m[35m (5.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20210111155910)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (45.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "username" character varying, "password_digest" character varying, "session_token" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (13.0ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_username" ON "users"  ("username")[0m
+  [1m[35m (7.2ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_session_token" ON "users"  ("session_token")[0m
+  [1m[36mprimary::SchemaMigration Create (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210111155910"]]
+  [1m[35m (12.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (4.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (1.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "test"], ["created_at", "2021-01-11 16:31:30.117187"], ["updated_at", "2021-01-11 16:31:30.117187"]]
+  [1m[35m (16.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(3658593233296589490)[0m
+  [1m[35m (4.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:00:39 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Damian Jast", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (8.7ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Damian Jast"], ["password_digest", "$2a$12$3zp8mvtVFSRJgac.SYyg4.JSHZNQEQU7AQYtBGD7XTphsQx7.dW1e"], ["session_token", "bxmv_8cDCoZHtbhMsdbkvA"], ["created_at", "2021-01-11 23:00:39.669697"], ["updated_at", "2021-01-11 23:00:39.669697"]]
+  [1m[35m (12.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 412ms (ActiveRecord: 37.9ms | Allocations: 12983)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fa556dfe4d8>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:00:39 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Jefferey Muller", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.2ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Jefferey Muller"], ["password_digest", "$2a$12$C5xhzK5rGA5eRw5foBm7l.94QlwYnTQ5sSJloPtWjfyRStzW1n2M."], ["session_token", "_Tt27XZvqO0CzvwFLQx9Eg"], ["created_at", "2021-01-11 23:00:40.063504"], ["updated_at", "2021-01-11 23:00:40.063504"]]
+  [1m[35m (16.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 341ms (ActiveRecord: 18.3ms | Allocations: 3649)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fa557239278>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:00:40 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Toby Roob", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Toby Roob"], ["password_digest", "$2a$12$mQJzi3mNBRJpCsQpqiJh2.mPT8b9oVxYGd44H96FVZTZY.Rf7.w9."], ["session_token", "Wu0gviGwg22X6DXUjnvPww"], ["created_at", "2021-01-11 23:00:40.454620"], ["updated_at", "2021-01-11 23:00:40.454620"]]
+  [1m[35m (10.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 350ms (ActiveRecord: 10.8ms | Allocations: 3671)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fa556af2820>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:00:40 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Stephen Luettgen", "password"=>"[FILTERED]"}}
+Completed 200 OK in 324ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1825)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:00:40 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Frances West", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Frances West"], ["password_digest", "$2a$12$N21fTrZZO1gMuqACSss9YeRTOq2UZU.L.GkwHqpDj2FVHg.VntVqy"], ["session_token", "r7FF6lQX_P2-qT0PKpNPUg"], ["created_at", "2021-01-11 23:00:41.191092"], ["updated_at", "2021-01-11 23:00:41.191092"]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 348ms (ActiveRecord: 16.1ms | Allocations: 3668)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fa55691cff0>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:00:41 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Jonah Sawayn Ret.", "password"=>"[FILTERED]"}}
+Completed 200 OK in 297ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1666)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:04:48 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Olinda Armstrong", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Olinda Armstrong"], ["password_digest", "$2a$12$rERBq/L.X9ujR8QJeilmeu6hlqIXMxYdqMk99ZySqzrU7qaowQUUa"], ["session_token", "6JR-SD22fxaRBAu1Q_r2DA"], ["created_at", "2021-01-11 23:04:48.709833"], ["updated_at", "2021-01-11 23:04:48.709833"]]
+  [1m[35m (13.5ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 392ms (ActiveRecord: 29.3ms | Allocations: 12983)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f13eaac4310>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:04:48 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Sydney Hegmann", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Sydney Hegmann"], ["password_digest", "$2a$12$74afflrtoqBMos6rvfudM.Sua5RQ3dMmOwLx15O6IqgDILv0e3cFm"], ["session_token", "WZZlWB2fGbriIVJNntdC2A"], ["created_at", "2021-01-11 23:04:49.139817"], ["updated_at", "2021-01-11 23:04:49.139817"]]
+  [1m[35m (18.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 376ms (ActiveRecord: 19.7ms | Allocations: 3649)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f13ead44cc0>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:04:49 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Chasity Schamberger I", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Chasity Schamberger I"], ["password_digest", "$2a$12$p6FB1dVKY2iEe2EWn0st.uAxQpuRkKsM50fF4lQqp0mhaQS851Th."], ["session_token", "WfjL-lVqsA-GqRA5aEj62A"], ["created_at", "2021-01-11 23:04:49.500436"], ["updated_at", "2021-01-11 23:04:49.500436"]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 328ms (ActiveRecord: 16.6ms | Allocations: 3671)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f13ea7a16d8>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:04:49 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Elliot Little", "password"=>"[FILTERED]"}}
+Completed 200 OK in 336ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1825)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:04:49 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Vernice Beer", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Vernice Beer"], ["password_digest", "$2a$12$PmUVefRX.jElBiOLbrhxzuoB5TStSexXzXGuefZYPUehvnteHcdlm"], ["session_token", "ySG9mCENK04Q6KpxApLDTQ"], ["created_at", "2021-01-11 23:04:50.239867"], ["updated_at", "2021-01-11 23:04:50.239867"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 360ms (ActiveRecord: 16.1ms | Allocations: 3668)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f13ea603b78>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:04:50 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Porfirio Predovic", "password"=>"[FILTERED]"}}
+Completed 200 OK in 303ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1666)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:11:52 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Adrianna Erdman", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.8ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Adrianna Erdman"], ["password_digest", "$2a$12$gB0Q4WDz9oRFBz8JBuHe8eM8sG6mpHpQLXAiJ5Ez3jVTyi396UBu."], ["session_token", "5aI5W3fAfkzNdktUdDmdDQ"], ["created_at", "2021-01-11 23:11:52.371278"], ["updated_at", "2021-01-11 23:11:52.371278"]]
+  [1m[35m (12.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 396ms (ActiveRecord: 28.3ms | Allocations: 12983)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fffd2307418>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:11:52 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Mora Friesen DC", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Mora Friesen DC"], ["password_digest", "$2a$12$7eW/gdGs.TDrPDj99zk8oOw387qxDd6GiOlSKgd2XTjdcaGXccp0."], ["session_token", "Cna5hBlPABoouy6Ic6VQPw"], ["created_at", "2021-01-11 23:11:52.799055"], ["updated_at", "2021-01-11 23:11:52.799055"]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 348ms (ActiveRecord: 16.6ms | Allocations: 3649)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fffd27aa4e8>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:11:52 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Warren Schuppe", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Warren Schuppe"], ["password_digest", "$2a$12$r7GM82Ctdf6ICEeH.7XUNOl0IX3e8XLjMkA2zrFifcLKrK4U/SlcC"], ["session_token", "ZZPWp6ee_ERkS24DYkOxDA"], ["created_at", "2021-01-11 23:11:53.177186"], ["updated_at", "2021-01-11 23:11:53.177186"]]
+  [1m[35m (15.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 343ms (ActiveRecord: 16.4ms | Allocations: 3671)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fffd19156f8>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:11:53 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Stacie Miller", "password"=>"[FILTERED]"}}
+Completed 200 OK in 287ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1825)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:11:53 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Sherita Swaniawski", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Sherita Swaniawski"], ["password_digest", "$2a$12$DboNWKieYTdm9PtmFmh09.FDj1NqH3PmbLfBOiv1b4T/VJY91APUi"], ["session_token", "BISR4ljidxialTG4CYHDgQ"], ["created_at", "2021-01-11 23:11:53.827897"], ["updated_at", "2021-01-11 23:11:53.827897"]]
+  [1m[35m (15.3ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 318ms (ActiveRecord: 16.0ms | Allocations: 3668)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007fe9cd952b80>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:11:53 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Opal Lemke", "password"=>"[FILTERED]"}}
+Completed 200 OK in 281ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1666)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:39:40 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Jeniffer Kulas LLD", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Jeniffer Kulas LLD"], ["password_digest", "$2a$12$dFPjMH1.B.fD0KuctXHIreykpv2s5e4/D2j.0yP46z4M7Rte2meJ."], ["session_token", "VnCE5TML0M_gBEQ1QXFghg"], ["created_at", "2021-01-11 23:39:40.891858"], ["updated_at", "2021-01-11 23:39:40.891858"]]
+  [1m[35m (13.2ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 348ms (ActiveRecord: 29.2ms | Allocations: 12983)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f708901ab70>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:39:40 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Josef Mueller V", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Josef Mueller V"], ["password_digest", "$2a$12$IIiIrp0KckaQJSjfznvYDOGba2uiiSLPfUTYMSEa7oxZjgeKceIAu"], ["session_token", "haZGxKsUBMo1tCw0V6sxUQ"], ["created_at", "2021-01-11 23:39:41.250140"], ["updated_at", "2021-01-11 23:39:41.250140"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 309ms (ActiveRecord: 16.4ms | Allocations: 3649)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f7089252618>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:39:41 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Odis Beer", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Odis Beer"], ["password_digest", "$2a$12$/ss5vtXcsQ/BdtSPyg03HOCIsjls/avR4ZwBJfmi2n/9NynSi9E/u"], ["session_token", "zRKuF3m8HLvuL2rrnZOmRg"], ["created_at", "2021-01-11 23:39:41.588558"], ["updated_at", "2021-01-11 23:39:41.588558"]]
+  [1m[35m (10.5ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 305ms (ActiveRecord: 11.2ms | Allocations: 3671)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f70892d7700>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:39:41 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Edwina Crona", "password"=>"[FILTERED]"}}
+Completed 200 OK in 281ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1825)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:39:41 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Dwain Larson", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Dwain Larson"], ["password_digest", "$2a$12$TlEmAS21HqwUfzoW7EY7sOtVw9lYQuWhZkHZMn0yNTw0WcZ2bEdKa"], ["session_token", "2bQGC0eIR1qb8xSu_j7orA"], ["created_at", "2021-01-11 23:39:42.214258"], ["updated_at", "2021-01-11 23:39:42.214258"]]
+  [1m[35m (12.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 308ms (ActiveRecord: 13.4ms | Allocations: 3668)
+
+NoMethodError - undefined method `reset_session_token' for #<User:0x00007f7088ab6710>
+Did you mean?  reset_session_token!
+               ensure_session_token
+               restore_session_token!:
+  app/controllers/application_controller.rb:17:in `login'
+  app/controllers/api/users_controller.rb:5:in `create'
+
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:39:42 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Precious Von", "password"=>"[FILTERED]"}}
+Completed 200 OK in 290ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 1666)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:41:49 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Lexie Durgan", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.7ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Lexie Durgan"], ["password_digest", "$2a$12$WJq4hxn8bwkZVRbTjDd9.uIi7Vt3V3oV99gFpZihakPTKxRsBo5j."], ["session_token", "fzDWxUDFX7dkU1wpgw7JAw"], ["created_at", "2021-01-11 23:41:49.933862"], ["updated_at", "2021-01-11 23:41:49.933862"]]
+  [1m[35m (11.2ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 400ms (ActiveRecord: 30.8ms | Allocations: 12172)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:41:49 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"The Hon. Leonardo Dickinson", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "The Hon. Leonardo Dickinson"], ["password_digest", "$2a$12$jbpbm8gYSBsxERdjTI90P.VUMswxACLcUoKyVlFssZLVXrokquMum"], ["session_token", "0f90KMrxWn7lL8nsGxIPlA"], ["created_at", "2021-01-11 23:41:50.308287"], ["updated_at", "2021-01-11 23:41:50.308287"]]
+  [1m[35m (15.0ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 354ms (ActiveRecord: 15.7ms | Allocations: 2852)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:41:50 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Gayle Wolf", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Gayle Wolf"], ["password_digest", "$2a$12$NObjFwV0KwFFB047vFKSBO1DR71nyIUpJS/by.F0iHb.iXfVTADL."], ["session_token", "8EZ5bcQAUdgoQ2STTDoVnw"], ["created_at", "2021-01-11 23:41:50.687180"], ["updated_at", "2021-01-11 23:41:50.687180"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 355ms (ActiveRecord: 16.1ms | Allocations: 2854)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:41:50 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Prof. Gregorio Pfeffer", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Prof. Gregorio Pfeffer"], ["password_digest", "$2a$12$SouXFjiabr0Dy2cKAah8sOgT8.a7XETd9daMKmSf05JpJr0vPI5vS"], ["session_token", "yY2zP1gGSlBRf9K6mAj3bw"], ["created_at", "2021-01-11 23:41:51.067423"], ["updated_at", "2021-01-11 23:41:51.067423"]]
+  [1m[35m (9.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 348ms (ActiveRecord: 10.4ms | Allocations: 2854)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:42:41 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Gov. Lorri Crooks", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Gov. Lorri Crooks"], ["password_digest", "$2a$12$8A2evtUr1g39dmHX9fMtOefUWB8/hUf485w3jSWE9.JP26Oe38.qi"], ["session_token", "BMfCMvOzvLrpCaqm5nOdag"], ["created_at", "2021-01-11 23:42:42.025568"], ["updated_at", "2021-01-11 23:42:42.025568"]]
+  [1m[35m (8.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 398ms (ActiveRecord: 35.6ms | Allocations: 12121)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:42:42 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Wm Bosco", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Wm Bosco"], ["password_digest", "$2a$12$jMhv0HZlovWxxFzXgrdg1OyNyw/mbXSwQ/uPP2pHZVS2alZzSblJa"], ["session_token", "An9pnjt5HZE9WZ7j453mjQ"], ["created_at", "2021-01-11 23:42:42.402157"], ["updated_at", "2021-01-11 23:42:42.402157"]]
+  [1m[35m (15.2ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 344ms (ActiveRecord: 15.9ms | Allocations: 2855)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:42:42 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Ethan Ankunding", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Ethan Ankunding"], ["password_digest", "$2a$12$m1JuiRRdo4dcTUHwoARTcuzI6uGvakkHdTEZYxAb4x0Ay64FfJDGm"], ["session_token", "rI4az-rE2si-A5rBms6cyw"], ["created_at", "2021-01-11 23:42:42.738032"], ["updated_at", "2021-01-11 23:42:42.738032"]]
+  [1m[35m (9.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 320ms (ActiveRecord: 10.6ms | Allocations: 2854)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:42:42 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Sung Yundt", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Sung Yundt"], ["password_digest", "$2a$12$kd1w5knlzBJYavAUUmRfa.MaiD8ksGEb5KgOH1VNgPwnQ8Zofg.Bu"], ["session_token", "vp97ts0nDzqCOgt2ETeywg"], ["created_at", "2021-01-11 23:42:43.087034"], ["updated_at", "2021-01-11 23:42:43.087034"]]
+  [1m[35m (9.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 330ms (ActiveRecord: 10.5ms | Allocations: 2854)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:43:07 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Gov. Kylie Lesch", "password"=>"[FILTERED]"}}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.7ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Gov. Kylie Lesch"], ["password_digest", "$2a$12$Yn6bfQs/JljLS7ksM0ksGuMyv/0UqvSNnTc.lpvAkE3JdzMP8x9U."], ["session_token", "eELNvjS1fw_uoEqh0yssxQ"], ["created_at", "2021-01-11 23:43:07.938420"], ["updated_at", "2021-01-11 23:43:07.938420"]]
+  [1m[35m (11.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (2.0ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "mUGBgv17jvHERdizgJHwlg"], ["updated_at", "2021-01-11 23:43:07.973987"], ["id", 25]]
+  [1m[35m (13.5ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.5ms | Allocations: 98)
+  Rendered api/users/show.json.jbuilder (Duration: 3.9ms | Allocations: 722)
+Completed 200 OK in 400ms (Views: 22.2ms | ActiveRecord: 43.5ms | Allocations: 14595)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:43:08 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Cristobal Runolfsdottir III", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Cristobal Runolfsdottir III"], ["password_digest", "$2a$12$cBNslsmcA1N3mziM5TuXdulEZHijU6L6LZ93LiisD29IdOt9TCxWC"], ["session_token", "JnhJNambyBX3ZSxxZLt3yw"], ["created_at", "2021-01-11 23:43:08.319404"], ["updated_at", "2021-01-11 23:43:08.319404"]]
+  [1m[35m (19.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "Ey12PAU6gAYj0TFrLz0gIQ"], ["updated_at", "2021-01-11 23:43:08.341548"], ["id", 26]]
+  [1m[35m (6.2ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.4ms | Allocations: 158)
+Completed 200 OK in 314ms (Views: 1.0ms | ActiveRecord: 27.1ms | Allocations: 1469)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:43:08 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Prof. Sau Gibson", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Prof. Sau Gibson"], ["password_digest", "$2a$12$jMudeJAcuLIcgO7K.w6lzut9sVD4CWd3SwL/1StXhJo38/WGf4Idm"], ["session_token", "LSOMtSwtOsMqol0PCg03Vw"], ["created_at", "2021-01-11 23:43:08.674095"], ["updated_at", "2021-01-11 23:43:08.674095"]]
+  [1m[35m (15.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "8xQhRSuPwkUFscTtwOwIUg"], ["updated_at", "2021-01-11 23:43:08.692645"], ["id", 27]]
+  [1m[35m (14.6ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.4ms | Allocations: 157)
+Completed 200 OK in 339ms (Views: 1.0ms | ActiveRecord: 31.1ms | Allocations: 1510)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:43:08 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Adrian Grant", "password"=>"[FILTERED]"}}
+Completed 200 OK in 312ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 977)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:43:09 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Delbert Wilderman", "password"=>"[FILTERED]"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Delbert Wilderman"], ["password_digest", "$2a$12$uokMDA.L9Qmesy7k3YBmiOM/fA0u1BHHoEC4LFDfh1prPisT9qiOK"], ["session_token", "3KyoLtBQEorumxCsDsx8pg"], ["created_at", "2021-01-11 23:43:09.356229"], ["updated_at", "2021-01-11 23:43:09.356229"]]
+  [1m[35m (10.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "ObdVSNvjlqYp1QFlT0f1bw"], ["updated_at", "2021-01-11 23:43:09.369824"], ["id", 28]]
+  [1m[35m (6.6ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.3ms | Allocations: 157)
+Completed 200 OK in 322ms (Views: 0.9ms | ActiveRecord: 18.2ms | Allocations: 1510)
+Started POST "/api/users" for 127.0.0.1 at 2021-01-11 18:43:09 -0500
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"Reanna Stanton", "password"=>"[FILTERED]"}}
+Completed 200 OK in 286ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 849)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Jayson Zboncak"], ["password_digest", "$2a$12$.jExmVItXjppovdfFvPiUeiLiLmpmRx0uspxd0ZYC/qAj1qlYWBsK"], ["session_token", "aPUWLfWdDL35zdt17OWqLg"], ["created_at", "2021-01-11 23:44:40.858295"], ["updated_at", "2021-01-11 23:44:40.858295"]]
+  [1m[35m (13.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:40 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Jayson Zboncak", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Jayson Zboncak"], ["LIMIT", 1]]
+Completed 200 OK in 301ms (Views: 0.3ms | ActiveRecord: 2.0ms | Allocations: 1467)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Angelyn Kiehn V"], ["password_digest", "$2a$12$x0SFCna7FGnIblGzHD35/.aQIyscSSEHNm8Y7yd1aUK6m7kQu0wf2"], ["session_token", "PfKPjJAwNjYGvgQWoqlTYQ"], ["created_at", "2021-01-11 23:44:41.529504"], ["updated_at", "2021-01-11 23:44:41.529504"]]
+  [1m[35m (10.2ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:41 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Angelyn Kiehn V", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Angelyn Kiehn V"], ["LIMIT", 1]]
+Completed 200 OK in 329ms (Views: 0.3ms | ActiveRecord: 0.7ms | Allocations: 465)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:41 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.5ms | ActiveRecord: 0.6ms | Allocations: 427)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Chasity Langworth"], ["password_digest", "$2a$12$ZTfCHo0mCNLjJWlx4RXYAu.rRKfa7K0eXzh7gxGK964c/3Mp3mLf."], ["session_token", "WOkAj6V35u2wg78R74jVog"], ["created_at", "2021-01-11 23:44:42.379223"], ["updated_at", "2021-01-11 23:44:42.379223"]]
+  [1m[35m (14.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:42 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Chasity Langworth", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Chasity Langworth"], ["LIMIT", 1]]
+Completed 200 OK in 295ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:42 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 454)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Grant Windler"], ["password_digest", "$2a$12$fZEx45wux5tmx4WKux6R3OPh03eAsuiOvC65CT8bdkFiiUy9h4lIy"], ["session_token", "JjmFM31f9-b6ByIH9ECImQ"], ["created_at", "2021-01-11 23:44:43.028891"], ["updated_at", "2021-01-11 23:44:43.028891"]]
+  [1m[35m (16.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:43 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Grant Windler", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Grant Windler"], ["LIMIT", 1]]
+Completed 200 OK in 309ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Columbus Bruen"], ["password_digest", "$2a$12$lshBDK5vhr4XZnibd.Et3e5EboSwqN5WqQBCxEegJOaJdKbj7SdDW"], ["session_token", "2wxnvuqWeix6EneJSuGJdQ"], ["created_at", "2021-01-11 23:44:43.688015"], ["updated_at", "2021-01-11 23:44:43.688015"]]
+  [1m[35m (19.3ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:43 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Columbus Bruen", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Columbus Bruen"], ["LIMIT", 1]]
+Completed 200 OK in 304ms (Views: 0.2ms | ActiveRecord: 0.7ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:44:44 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 440)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Gwyn Willms"], ["password_digest", "$2a$12$.OwzVxgm5gCnziFybWgtK.c0.fnbcozenVIEqhd7i0HvO8T4Sn.bm"], ["session_token", "x0gCLQQF6uVGRGjTypyFBg"], ["created_at", "2021-01-11 23:53:41.255959"], ["updated_at", "2021-01-11 23:53:41.255959"]]
+  [1m[35m (14.0ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:41 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Gwyn Willms", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (4.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Gwyn Willms"], ["LIMIT", 1]]
+Completed 200 OK in 619ms (Views: 0.3ms | ActiveRecord: 5.3ms | Allocations: 1467)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Eugene Wolff"], ["password_digest", "$2a$12$XvdInzinL15FjF1Gm1HKh.8avacRTfQkTVKy2cMcVW4O8B2LyqCh2"], ["session_token", "XM7UCO-n4jGqFiWnLPilLA"], ["created_at", "2021-01-11 23:53:42.553320"], ["updated_at", "2021-01-11 23:53:42.553320"]]
+  [1m[35m (16.8ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:42 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Eugene Wolff", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Eugene Wolff"], ["LIMIT", 1]]
+Completed 200 OK in 326ms (Views: 0.3ms | ActiveRecord: 0.6ms | Allocations: 465)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:42 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 427)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Thersa Runte"], ["password_digest", "$2a$12$uqXY.LFuYabGtUuB0Liobur0UlAo7lVG1VzIUPk4FB6q3OTvTphP2"], ["session_token", "RQsnDct5P4S28m0W64fJzA"], ["created_at", "2021-01-11 23:53:43.300404"], ["updated_at", "2021-01-11 23:53:43.300404"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:43 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Thersa Runte", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Thersa Runte"], ["LIMIT", 1]]
+Completed 200 OK in 304ms (Views: 0.2ms | ActiveRecord: 0.5ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:43 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 454)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Prof. Dave Kassulke"], ["password_digest", "$2a$12$E9I0dDV./tq5G6Eog9vgYuSF4O9NmmC.VEH4XP.zO2Zi4OZe5f5T2"], ["session_token", "VGTBWQAcUzbVlDPzDuoUNw"], ["created_at", "2021-01-11 23:53:43.955263"], ["updated_at", "2021-01-11 23:53:43.955263"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:43 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Prof. Dave Kassulke", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Prof. Dave Kassulke"], ["LIMIT", 1]]
+Completed 200 OK in 308ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Eduardo Marquardt"], ["password_digest", "$2a$12$tdZxZtKs0RZ223GXg5eOeOurpLo4aSU4D3i/4WuxBWXegxgRQOFRe"], ["session_token", "9Ynl5h6cYJUyOq0F9A3I_A"], ["created_at", "2021-01-11 23:53:44.592013"], ["updated_at", "2021-01-11 23:53:44.592013"]]
+  [1m[35m (16.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:44 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Eduardo Marquardt", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Eduardo Marquardt"], ["LIMIT", 1]]
+Completed 200 OK in 326ms (Views: 0.3ms | ActiveRecord: 0.4ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:53:44 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 440)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Dong Larkin"], ["password_digest", "$2a$12$tMum10kFKCqZLoLBDA2XFusBiY2SBjj0xXGieg3qoEgNMepfHIgRi"], ["session_token", "7UKcuA35qhMqqLZqlURUgw"], ["created_at", "2021-01-11 23:54:15.572226"], ["updated_at", "2021-01-11 23:54:15.572226"]]
+  [1m[35m (14.0ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:15 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Dong Larkin", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (2.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Dong Larkin"], ["LIMIT", 1]]
+Completed 200 OK in 359ms (Views: 0.3ms | ActiveRecord: 3.4ms | Allocations: 1467)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Autumn Boehm"], ["password_digest", "$2a$12$hhuox7cjDOozS8.5l1MQ1.oCtXP4Nb/U8cQnOoBUhokbSPnHdLLIu"], ["session_token", "GTBGSLp3kJLqMksV2psifQ"], ["created_at", "2021-01-11 23:54:16.275052"], ["updated_at", "2021-01-11 23:54:16.275052"]]
+  [1m[35m (15.8ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:16 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Autumn Boehm", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Autumn Boehm"], ["LIMIT", 1]]
+Completed 200 OK in 282ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:16 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.4ms | Allocations: 427)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Nicky Davis"], ["password_digest", "$2a$12$7YQbzI2uJ1izsSKxRAiCl.qw6eIImM.G1e7QFDrC2gS7ILHTmD42W"], ["session_token", "GE24Io25lLJrHK-LJkyYyg"], ["created_at", "2021-01-11 23:54:16.923037"], ["updated_at", "2021-01-11 23:54:16.923037"]]
+  [1m[35m (23.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:16 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Nicky Davis", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Nicky Davis"], ["LIMIT", 1]]
+Completed 200 OK in 334ms (Views: 0.2ms | ActiveRecord: 0.7ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:17 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 454)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Glenna Rodriguez DO"], ["password_digest", "$2a$12$A851jwBiq/XpSrXA9g90mutWddwYVlAXffJjDxYBGz3Mrft77f5lG"], ["session_token", "6qkiVKc45zd1sSoWQCs6sw"], ["created_at", "2021-01-11 23:54:17.640522"], ["updated_at", "2021-01-11 23:54:17.640522"]]
+  [1m[35m (8.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:17 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Glenna Rodriguez DO", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Glenna Rodriguez DO"], ["LIMIT", 1]]
+Completed 200 OK in 297ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Fr. Ellsworth Funk"], ["password_digest", "$2a$12$4341RPlIhtOTydkcHfEOa.Zsp2YkNsmAsQ5gkV7J1zxmBvzA227K2"], ["session_token", "f-orSpzcoMUax-TGkEUl5Q"], ["created_at", "2021-01-11 23:54:18.251653"], ["updated_at", "2021-01-11 23:54:18.251653"]]
+  [1m[35m (16.2ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:18 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Fr. Ellsworth Funk", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Fr. Ellsworth Funk"], ["LIMIT", 1]]
+Completed 200 OK in 305ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:54:18 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 440)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Emmett Durgan DO"], ["password_digest", "$2a$12$gNMWH7Su9vOsjG.vHWdi5OhNnHhy2ktaNHjYnBppxhwAVL8EN3vIC"], ["session_token", "EFOKo48_ooeiYZYWy0C_5Q"], ["created_at", "2021-01-11 23:57:18.689684"], ["updated_at", "2021-01-11 23:57:18.689684"]]
+  [1m[35m (14.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:18 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Emmett Durgan DO", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (4.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Emmett Durgan DO"], ["LIMIT", 1]]
+Completed 200 OK in 395ms (Views: 0.5ms | ActiveRecord: 5.6ms | Allocations: 1467)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Jeanett Vandervort"], ["password_digest", "$2a$12$Ob5BmleKgKAVUezswCJEkOwlllzC3OqOqmzDqXCS6gjI3RDjQH1VC"], ["session_token", "4rsXUmvlB-C8CP5gEhAkWQ"], ["created_at", "2021-01-11 23:57:19.534496"], ["updated_at", "2021-01-11 23:57:19.534496"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:19 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Jeanett Vandervort", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Jeanett Vandervort"], ["LIMIT", 1]]
+Completed 200 OK in 295ms (Views: 0.2ms | ActiveRecord: 0.7ms | Allocations: 465)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:19 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.3ms | ActiveRecord: 0.4ms | Allocations: 427)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Camellia Labadie"], ["password_digest", "$2a$12$rbmzAedC63/lSYrI0lyN3.U6Q9T2xBFazK5i/z2ZGiBHXZ4w/irJ2"], ["session_token", "1nCEfjIx3qjpyFIcGiwrZQ"], ["created_at", "2021-01-11 23:57:20.208360"], ["updated_at", "2021-01-11 23:57:20.208360"]]
+  [1m[35m (12.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:20 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Camellia Labadie", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Camellia Labadie"], ["LIMIT", 1]]
+Completed 200 OK in 301ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:20 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 454)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Ellie Armstrong"], ["password_digest", "$2a$12$AybMOf87efyNLzNMNtKQrObzEZrrYak9Ilhf/Cofyn7VclU8xzB5e"], ["session_token", "c1VeZRMSnhAUW0VjBOP7CQ"], ["created_at", "2021-01-11 23:57:20.868704"], ["updated_at", "2021-01-11 23:57:20.868704"]]
+  [1m[35m (24.8ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:20 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Ellie Armstrong", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Ellie Armstrong"], ["LIMIT", 1]]
+Completed 200 OK in 282ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Logan Smitham MD"], ["password_digest", "$2a$12$VEWCgO1vg4C39bUfBqrQm.N5WD3DU7Rk.V08WGg1lBZgXju6P6iDS"], ["session_token", "_MSr4B4l8ZYHLWGwDhzH8A"], ["created_at", "2021-01-11 23:57:21.482815"], ["updated_at", "2021-01-11 23:57:21.482815"]]
+  [1m[35m (9.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:21 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Logan Smitham MD", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Logan Smitham MD"], ["LIMIT", 1]]
+Completed 200 OK in 323ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 465)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:21 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms | Allocations: 440)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (2.0ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Roscoe Kub"], ["password_digest", "$2a$12$mTWiqQUmzePBB.4BpKI4AusIptlTKFrvGsEVeWZ7ohRXVu1e2bgIO"], ["session_token", "-4simoKsdXhDq6yMlYK_UQ"], ["created_at", "2021-01-11 23:57:56.417542"], ["updated_at", "2021-01-11 23:57:56.417542"]]
+  [1m[35m (14.8ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:56 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Roscoe Kub", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Roscoe Kub"], ["LIMIT", 1]]
+Completed 200 OK in 317ms (Views: 0.3ms | ActiveRecord: 2.1ms | Allocations: 1467)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Valentine Von"], ["password_digest", "$2a$12$T9VUBFwv4HvzW2rqhkUB5Ou.Xh3C8s8ZpX0piu3BYb0.FOBZVYh/m"], ["session_token", "cCcPniarWyi38x8abk5ifw"], ["created_at", "2021-01-11 23:57:57.086340"], ["updated_at", "2021-01-11 23:57:57.086340"]]
+  [1m[35m (15.0ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:57 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Valentine Von", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Valentine Von"], ["LIMIT", 1]]
+Completed 200 OK in 291ms (Views: 0.2ms | ActiveRecord: 0.7ms | Allocations: 465)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:57:57 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.5ms | Allocations: 427)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Harry Pagac LLD"], ["password_digest", "$2a$12$4LaHqofNTUBzY8Of51AqHOR6V1S567rI49KlwProX2WV9DfP3pi02"], ["session_token", "uthsk44HHcfYRwBRlR63xQ"], ["created_at", "2021-01-11 23:59:07.519181"], ["updated_at", "2021-01-11 23:59:07.519181"]]
+  [1m[35m (14.8ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 18:59:07 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Harry Pagac LLD", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Harry Pagac LLD"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Harry Pagac LLD"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "isaiah"], ["password_digest", "$2a$12$83Xadmo4opG7OmaYaqPWZ.QKyU7LkLl6MN4O2GB9EWYRF.IOlWj4e"], ["session_token", "8fhOzLuD6xt30K07Ho6qYw"], ["created_at", "2021-01-12 00:01:32.362726"], ["updated_at", "2021-01-12 00:01:32.362726"]]
+  [1m[35m (13.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "isaiah"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "isaiah"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "isaiah"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Ronald Schroeder MD"], ["LIMIT", 1]]
+  [1m[36mUser Create (2.7ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Ronald Schroeder MD"], ["password_digest", "$2a$12$HUyGV3uhFubd5hWLQSTB5Oy4dm02fV/YZ6LqgFiKB9gcHmk/oWcge"], ["session_token", "D33_r2VP1dJr7Ls6xmApvA"], ["created_at", "2021-01-12 00:06:09.401402"], ["updated_at", "2021-01-12 00:06:09.401402"]]
+  [1m[35m (17.1ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:09 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Ronald Schroeder MD", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Ronald Schroeder MD"], ["LIMIT", 1]]
+Completed 200 OK in 1886ms (Views: 0.3ms | ActiveRecord: 0.9ms | Allocations: 62966)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Delbert Dicki"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Delbert Dicki"], ["password_digest", "$2a$12$9W7XeLU7bmjl61eIxT6FKuRNcadRsuTYxw0gy3aSEwCRg33Sr7gga"], ["session_token", "a_syGtfgiZ4_z9z6LDDISA"], ["created_at", "2021-01-12 00:06:11.622632"], ["updated_at", "2021-01-12 00:06:11.622632"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:11 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Delbert Dicki", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Delbert Dicki"], ["LIMIT", 1]]
+Completed 200 OK in 933ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 3536)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:12 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 572ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 3490)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Jesenia Steuber"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Jesenia Steuber"], ["password_digest", "$2a$12$Ei/dVsxv0dfLwynzpDvpr.vj9bvU/3bSvItR7Wcr75NCnueikVkh."], ["session_token", "-1Suw05WRK2yFgenpo2ofA"], ["created_at", "2021-01-12 00:06:13.956501"], ["updated_at", "2021-01-12 00:06:13.956501"]]
+  [1m[35m (13.1ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:13 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Jesenia Steuber", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Jesenia Steuber"], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 366ms (ActiveRecord: 0.4ms | Allocations: 5837)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Ema Auer"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Ema Auer"], ["password_digest", "$2a$12$8fxQU2UgF2b..fkTlUeUCe8KTEo153EnFq8cui8klwB8jrFlxfTa6"], ["session_token", "9LlqWw3FVv1sTD5BLMYgfw"], ["created_at", "2021-01-12 00:06:14.690788"], ["updated_at", "2021-01-12 00:06:14.690788"]]
+  [1m[35m (15.1ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:14 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Ema Auer", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Ema Auer"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Eddy Lindgren"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Eddy Lindgren"], ["password_digest", "$2a$12$r.RXJC57XDPExCFK5N71O.9mkiM7ujYgY4xjyZwMyFeeEYJknie.u"], ["session_token", "ycHhq0nSeLO23sQpR8Gs2Q"], ["created_at", "2021-01-12 00:06:42.469378"], ["updated_at", "2021-01-12 00:06:42.469378"]]
+  [1m[35m (14.2ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:42 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Eddy Lindgren", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Eddy Lindgren"], ["LIMIT", 1]]
+Completed 200 OK in 293ms (Views: 0.3ms | ActiveRecord: 0.8ms | Allocations: 843)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rosalie O'Kon"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Rosalie O'Kon"], ["password_digest", "$2a$12$p8TFmKk.Gwsf39yakq.IPe4CBC4yVf5p1zFCT7N0nD4zq.y/8Y2bq"], ["session_token", "HyC0vWNLOYsWxmNGBFtZ3A"], ["created_at", "2021-01-12 00:06:43.095635"], ["updated_at", "2021-01-12 00:06:43.095635"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:43 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Rosalie O'Kon", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rosalie O'Kon"], ["LIMIT", 1]]
+Completed 200 OK in 302ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 476)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:06:43 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 427)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Yaeko Lueilwitz DVM"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.1ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Yaeko Lueilwitz DVM"], ["password_digest", "$2a$12$F/Om2fOS/Gxfql7VQr9WSebA7.SxabFzMbl9PhrvSqEFFLgIMTkR."], ["session_token", "ABQea5QByJ5Q6ANlFId5Gw"], ["created_at", "2021-01-12 00:07:11.371185"], ["updated_at", "2021-01-12 00:07:11.371185"]]
+  [1m[35m (14.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:11 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Yaeko Lueilwitz DVM", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Yaeko Lueilwitz DVM"], ["LIMIT", 1]]
+Completed 200 OK in 296ms (Views: 0.3ms | ActiveRecord: 1.1ms | Allocations: 843)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Stefania McDermott"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Stefania McDermott"], ["password_digest", "$2a$12$Xh7j7RzMV/bxesnquNRyQOzsYkZY/SoZ8Td/hUifMuV8/jseETtSO"], ["session_token", "N0rvkQYNbSVqjeM2ChCF_g"], ["created_at", "2021-01-12 00:07:12.012642"], ["updated_at", "2021-01-12 00:07:12.012642"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:12 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Stefania McDermott", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Stefania McDermott"], ["LIMIT", 1]]
+Completed 200 OK in 284ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 476)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:12 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.6ms | Allocations: 427)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rep. Glendora Adams"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Rep. Glendora Adams"], ["password_digest", "$2a$12$LRHeO44sZUEDqUvG2iXsKOTmEJCatm0hDMqKBX9RxtwCEHrIaYaS2"], ["session_token", "72wDJ-iUmpC8nwuCuYz0TA"], ["created_at", "2021-01-12 00:07:12.665663"], ["updated_at", "2021-01-12 00:07:12.665663"]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:12 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Rep. Glendora Adams", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rep. Glendora Adams"], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 299ms (ActiveRecord: 0.4ms | Allocations: 2796)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Olin Kozey"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Olin Kozey"], ["password_digest", "$2a$12$B46sic29D0dlGYmshMWD..BcrJQdK6OPrx2zlHfy..EcQ4n5yerY2"], ["session_token", "FbGZo4nOkgrRCJ47bg97TA"], ["created_at", "2021-01-12 00:07:13.281823"], ["updated_at", "2021-01-12 00:07:13.281823"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:13 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Olin Kozey", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Olin Kozey"], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 295ms (ActiveRecord: 0.4ms | Allocations: 2738)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Maryjane Carroll"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Maryjane Carroll"], ["password_digest", "$2a$12$v6Rs53bV9rXEZjJS0w1UgeD/pa68LHb2iT3.EIZp63q4LR2DYfFMW"], ["session_token", "Lr8O8JRIPmswnwIXUvbaJA"], ["created_at", "2021-01-12 00:07:13.895544"], ["updated_at", "2021-01-12 00:07:13.895544"]]
+  [1m[35m (10.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:13 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Maryjane Carroll", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Maryjane Carroll"], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 297ms (ActiveRecord: 0.4ms | Allocations: 2738)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Fr. Eli Larson"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.2ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Fr. Eli Larson"], ["password_digest", "$2a$12$IyWPbJLVDBDMqkjNcCKtfuEwHyA1gttINh1UxZJ.6yGN7z14HnwQa"], ["session_token", "3wHqLBS_bTxcMVM74VDv9Q"], ["created_at", "2021-01-12 00:07:40.844325"], ["updated_at", "2021-01-12 00:07:40.844325"]]
+  [1m[35m (14.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:40 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Fr. Eli Larson", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Fr. Eli Larson"], ["LIMIT", 1]]
+Completed 200 OK in 293ms (Views: 0.3ms | ActiveRecord: 0.8ms | Allocations: 843)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Blair Greenholt"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Blair Greenholt"], ["password_digest", "$2a$12$JUJYsDz9vU5Zw2VFNPkGoOECOw5JiMYZpPdITtS5k4J6x/fhISISW"], ["session_token", "rvOgOfz6fqBURQEZKoN0KA"], ["created_at", "2021-01-12 00:07:41.504797"], ["updated_at", "2021-01-12 00:07:41.504797"]]
+  [1m[35m (18.8ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:41 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Blair Greenholt", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Blair Greenholt"], ["LIMIT", 1]]
+Completed 200 OK in 281ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 476)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:41 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 427)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Many O'Kon"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Many O'Kon"], ["password_digest", "$2a$12$MwgQ7KGdErEJnEZzE6skQ.aQWOvgzAbSkvcLs/MXzT9.ZWA9nCHqC"], ["session_token", "01Ce-BtTYZ2l2pxKAoeY-Q"], ["created_at", "2021-01-12 00:07:42.158757"], ["updated_at", "2021-01-12 00:07:42.158757"]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:42 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Many O'Kon", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Many O'Kon"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Many O'Kon"], ["id", 66], ["LIMIT", 1]]
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "9e1kC0czKN7R_qy5F87SoA"], ["updated_at", "2021-01-12 00:07:42.524345"], ["id", 66]]
+  [1m[35m (15.3ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.5ms | Allocations: 98)
+  Rendered api/users/show.json.jbuilder (Duration: 2.5ms | Allocations: 719)
+Completed 200 OK in 340ms (Views: 11.5ms | ActiveRecord: 17.3ms | Allocations: 4766)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:42 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 525)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rev. Malik Kertzmann"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Rev. Malik Kertzmann"], ["password_digest", "$2a$12$AIXq4NhxHFe8O3zO8uScqu32r8R2IBDxOlFDomZZOaFWKSnnx.PuO"], ["session_token", "YUTGyQju_Lnba04JsdgdWw"], ["created_at", "2021-01-12 00:07:42.863115"], ["updated_at", "2021-01-12 00:07:42.863115"]]
+  [1m[35m (14.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:42 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Rev. Malik Kertzmann", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rev. Malik Kertzmann"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Rev. Malik Kertzmann"], ["id", 67], ["LIMIT", 1]]
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "DIhU1tJtxGAXMViyZ0oKnw"], ["updated_at", "2021-01-12 00:07:43.201067"], ["id", 67]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.4ms | Allocations: 157)
+Completed 200 OK in 326ms (Views: 1.0ms | ActiveRecord: 17.1ms | Allocations: 1498)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:43 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 4ms (Views: 0.3ms | ActiveRecord: 0.8ms | Allocations: 497)
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Merle Hettinger"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Merle Hettinger"], ["password_digest", "$2a$12$rrXyZFR/0YrKKcINw2RL4.RFQhwRSRBl86FKaPo8wW6qJinf7MVTK"], ["session_token", "qB_VPeBdSg0AAy1P24ExKQ"], ["created_at", "2021-01-12 00:07:43.575864"], ["updated_at", "2021-01-12 00:07:43.575864"]]
+  [1m[35m (9.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:43 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Merle Hettinger", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Merle Hettinger"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Merle Hettinger"], ["id", 68], ["LIMIT", 1]]
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "MdfYZedQdktIJbiaTqB9WQ"], ["updated_at", "2021-01-12 00:07:43.882845"], ["id", 68]]
+  [1m[35m (15.0ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.2ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 1.0ms | Allocations: 157)
+Completed 200 OK in 304ms (Views: 2.1ms | ActiveRecord: 16.5ms | Allocations: 1497)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:07:43 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 506)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Criselda Hagenes"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Criselda Hagenes"], ["password_digest", "$2a$12$wI62a5gDPu7FQW7jLHIR2O/8.kUUuk3nh/mVzUaxuespbcn8WlhWy"], ["session_token", "h2ZIYw-iRj6xfH2OIzo93w"], ["created_at", "2021-01-12 00:11:24.652112"], ["updated_at", "2021-01-12 00:11:24.652112"]]
+  [1m[35m (13.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:24 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Criselda Hagenes", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Criselda Hagenes"], ["LIMIT", 1]]
+Completed 200 OK in 304ms (Views: 0.3ms | ActiveRecord: 1.0ms | Allocations: 843)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Maricela Homenick"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Maricela Homenick"], ["password_digest", "$2a$12$kA1YWHvI68ty6505O6CPvOIoO8VchyfkouXdZ584dd.egsd8xfBoa"], ["session_token", "30lWqC2f5-yz-xZR9C3cdA"], ["created_at", "2021-01-12 00:11:25.316023"], ["updated_at", "2021-01-12 00:11:25.316023"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:25 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Maricela Homenick", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Maricela Homenick"], ["LIMIT", 1]]
+Completed 200 OK in 337ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 476)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:25 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 427)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Colene Zemlak"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Colene Zemlak"], ["password_digest", "$2a$12$qwCSqEBrNxbPasS4CVZrZeGCf.b1omHU6RD2trWlsF.Up6ADP1F/m"], ["session_token", "oxgLVywPf21mInnrRTMrDw"], ["created_at", "2021-01-12 00:11:26.010139"], ["updated_at", "2021-01-12 00:11:26.010139"]]
+  [1m[35m (9.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:26 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Colene Zemlak", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Colene Zemlak"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Colene Zemlak"], ["id", 71], ["LIMIT", 1]]
+  [1m[36mUser Update (0.6ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "pXoaObyck1SgXkEQ84iOrg"], ["updated_at", "2021-01-12 00:11:26.319126"], ["id", 71]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.4ms | Allocations: 98)
+  Rendered api/users/show.json.jbuilder (Duration: 2.2ms | Allocations: 719)
+Completed 200 OK in 312ms (Views: 9.2ms | ActiveRecord: 17.3ms | Allocations: 4766)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:26 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 522)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Prof. Chris Boyle"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Prof. Chris Boyle"], ["password_digest", "$2a$12$fmV1sUE9rQJik77Kb45zsOtXpX3p3Aj8Ma7GZl0Xp5yVy60myiQOe"], ["session_token", "vf9N8Cl1_ztZYc4JCdG-wg"], ["created_at", "2021-01-12 00:11:26.667241"], ["updated_at", "2021-01-12 00:11:26.667241"]]
+  [1m[35m (14.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:26 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Prof. Chris Boyle", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Prof. Chris Boyle"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Prof. Chris Boyle"], ["id", 72], ["LIMIT", 1]]
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "hJPlCW5LpMiIxPz8RwIwdg"], ["updated_at", "2021-01-12 00:11:26.993633"], ["id", 72]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.3ms | Allocations: 157)
+Completed 200 OK in 304ms (Views: 0.9ms | ActiveRecord: 17.1ms | Allocations: 1498)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:27 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 499)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Ethelene Simonis"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Ethelene Simonis"], ["password_digest", "$2a$12$rXOhRoxXsTtgFdP1Eiz27OTxEpsNhDfaK4pgGVXYvZxCnZabVtKOO"], ["session_token", "NGx8HM0ITWLLc_MoOq86Aw"], ["created_at", "2021-01-12 00:11:27.336136"], ["updated_at", "2021-01-12 00:11:27.336136"]]
+  [1m[35m (9.0ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:27 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Ethelene Simonis", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Ethelene Simonis"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Ethelene Simonis"], ["id", 73], ["LIMIT", 1]]
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "ecWkcAPUNm3je74MHNY4yA"], ["updated_at", "2021-01-12 00:11:27.643696"], ["id", 73]]
+  [1m[35m (14.8ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.3ms | Allocations: 157)
+Completed 200 OK in 302ms (Views: 0.9ms | ActiveRecord: 16.3ms | Allocations: 1497)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:27 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 517)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Londa Bins"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.1ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Londa Bins"], ["password_digest", "$2a$12$Q/32zGgHhr2w.DP9Qbvxu.ofUtY3wLNmqjnvtGiE/Y3d2daXpnBrO"], ["session_token", "0m7WGs0CFR2-0wuf3Whb9w"], ["created_at", "2021-01-12 00:11:39.683582"], ["updated_at", "2021-01-12 00:11:39.683582"]]
+  [1m[35m (8.1ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:11:39 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Londa Bins", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Londa Bins"], ["LIMIT", 1]]
+Completed 200 OK in 56471ms (Views: 0.3ms | ActiveRecord: 0.7ms | Allocations: 63714)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Georgette West"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Georgette West"], ["password_digest", "$2a$12$BLMfa70430ojF.y6fk4sB.lDXSleVcVUOtshSKzDk5hpyI/MywYAq"], ["session_token", "b4YupEJDoko3-rNxo2Uxig"], ["created_at", "2021-01-12 00:12:36.483885"], ["updated_at", "2021-01-12 00:12:36.483885"]]
+  [1m[35m (12.0ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:12:36 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Georgette West", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Georgette West"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Amb. Ellis Upton"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.1ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Amb. Ellis Upton"], ["password_digest", "$2a$12$Vf4U5wBC.6aYOYWoWfdCveBHOkHo2fsWrtrAB/PFvtMyZIyOGGpeu"], ["session_token", "ULXmV-bzmFAyBjfDhx3VBA"], ["created_at", "2021-01-12 00:12:59.548975"], ["updated_at", "2021-01-12 00:12:59.548975"]]
+  [1m[35m (13.5ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:12:59 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Amb. Ellis Upton", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Amb. Ellis Upton"], ["LIMIT", 1]]
+Completed 200 OK in 334ms (Views: 0.3ms | ActiveRecord: 0.9ms | Allocations: 843)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rep. Rey Lowe"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Rep. Rey Lowe"], ["password_digest", "$2a$12$9piQI1Uhb1uirZv7YBXn7e9FIplYHTVfuqTqSM3wMN8kAFlTXzQ8m"], ["session_token", "LOrs5Ne-W8G37iUG3A-EKQ"], ["created_at", "2021-01-12 00:13:00.248580"], ["updated_at", "2021-01-12 00:13:00.248580"]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:00 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Rep. Rey Lowe", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rep. Rey Lowe"], ["LIMIT", 1]]
+Completed 200 OK in 354ms (Views: 0.2ms | ActiveRecord: 0.8ms | Allocations: 476)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:00 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 427)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rex Ullrich"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Rex Ullrich"], ["password_digest", "$2a$12$OA3AZVEKGVb2G3O8VMh/2.1G6rVAkZ03GbkTuaVe8SZOwax7l.HRW"], ["session_token", "GRI9F252TdTFVSbX9VC4zg"], ["created_at", "2021-01-12 00:13:00.973144"], ["updated_at", "2021-01-12 00:13:00.973144"]]
+  [1m[35m (12.2ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:00 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Rex Ullrich", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rex Ullrich"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Rex Ullrich"], ["id", 78], ["LIMIT", 1]]
+  [1m[36mUser Update (0.6ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "A5_T0D6GeHV6JtNoUJGK7g"], ["updated_at", "2021-01-12 00:13:01.293026"], ["id", 78]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.4ms | Allocations: 98)
+  Rendered api/users/show.json.jbuilder (Duration: 2.3ms | Allocations: 719)
+Completed 200 OK in 321ms (Views: 9.9ms | ActiveRecord: 17.3ms | Allocations: 4766)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:01 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 4ms (Views: 0.3ms | ActiveRecord: 0.6ms | Allocations: 529)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Charita Strosin"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Charita Strosin"], ["password_digest", "$2a$12$BjL.guccfwt3xhSq9FR5weMz/eQ3N/U4FDsybfbXxtduxLCiGdTzm"], ["session_token", "bHD5TaC_Geoh3T2eTgbVpQ"], ["created_at", "2021-01-12 00:13:01.673409"], ["updated_at", "2021-01-12 00:13:01.673409"]]
+  [1m[35m (15.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:01 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Charita Strosin", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Charita Strosin"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Charita Strosin"], ["id", 79], ["LIMIT", 1]]
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "coHyXp8HR2kEaQucmSgnkg"], ["updated_at", "2021-01-12 00:13:02.019541"], ["id", 79]]
+  [1m[35m (15.1ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.4ms | Allocations: 157)
+Completed 200 OK in 334ms (Views: 1.0ms | ActiveRecord: 16.6ms | Allocations: 1498)
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:02 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 501)
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Hana Harris"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Hana Harris"], ["password_digest", "$2a$12$DTLEkrC/kbcPeybZR8/JGec1wrL9J1.AC/XVUovpmb0T7HY2geePS"], ["session_token", "Oe_18NZI5W2JNCfZzHKELw"], ["created_at", "2021-01-12 00:13:02.346395"], ["updated_at", "2021-01-12 00:13:02.346395"]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:02 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Hana Harris", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Hana Harris"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Hana Harris"], ["id", 80], ["LIMIT", 1]]
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "aB5kSpvW_X8-idzFS2vpFA"], ["updated_at", "2021-01-12 00:13:02.675284"], ["id", 80]]
+  [1m[35m (6.9ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.3ms | Allocations: 157)
+Completed 200 OK in 313ms (Views: 1.0ms | ActiveRecord: 8.8ms | Allocations: 1497)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:13:02 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 507)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rob Ebert"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Rob Ebert"], ["password_digest", "$2a$12$KkWqt7DsmLaNJJZsiJW7y.v8rXKuP5Zu5t4ORzOSAInNP6.zDoUl2"], ["session_token", "zCmJxg8GYwtvujSlZSSzaA"], ["created_at", "2021-01-12 00:14:24.619183"], ["updated_at", "2021-01-12 00:14:24.619183"]]
+  [1m[35m (14.2ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:24 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Rob Ebert", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Rob Ebert"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Rob Ebert"], ["id", 81], ["LIMIT", 1]]
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "U6kXlSXxguFVUrWF0uAjCg"], ["updated_at", "2021-01-12 00:14:24.989539"], ["id", 81]]
+  [1m[35m (16.0ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.4ms | Allocations: 98)
+  Rendered api/users/show.json.jbuilder (Duration: 2.3ms | Allocations: 722)
+Completed 200 OK in 337ms (Views: 9.4ms | ActiveRecord: 18.0ms | Allocations: 5134)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Shaun Moore"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Shaun Moore"], ["password_digest", "$2a$12$wHFGm.INGLtaov8O5jQ1deGMzQstBLi.owt/Fhn2ehdCA9ZWanr4O"], ["session_token", "gG95e6QXM6GwK4RQ3jGwZg"], ["created_at", "2021-01-12 00:14:25.303588"], ["updated_at", "2021-01-12 00:14:25.303588"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:25 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Shaun Moore", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Shaun Moore"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Shaun Moore"], ["id", 82], ["LIMIT", 1]]
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "jFPsijBqrr98QDHqv2Pntw"], ["updated_at", "2021-01-12 00:14:25.655335"], ["id", 82]]
+  [1m[35m (15.4ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.4ms | Allocations: 157)
+Completed 200 OK in 340ms (Views: 0.9ms | ActiveRecord: 17.1ms | Allocations: 1498)
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:25 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"wrongDoug", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "wrongDoug"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 428)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Kasandra Durgan V"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Kasandra Durgan V"], ["password_digest", "$2a$12$TPE.RZkDN0vFOCb.SIWm3eDE.Zxwx0coPwBUAdcqcnhTExa./uNU6"], ["session_token", "Oe7MfRUCFHtuSXlj3oQAdA"], ["created_at", "2021-01-12 00:14:26.007828"], ["updated_at", "2021-01-12 00:14:26.007828"]]
+  [1m[35m (9.5ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:26 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Kasandra Durgan V", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Kasandra Durgan V"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Kasandra Durgan V"], ["id", 83], ["LIMIT", 1]]
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "nWVsk1qI8n9dBnmVidTwwg"], ["updated_at", "2021-01-12 00:14:26.330615"], ["id", 83]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.4ms | Allocations: 157)
+Completed 200 OK in 318ms (Views: 0.9ms | ActiveRecord: 17.3ms | Allocations: 1497)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:26 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 4ms (Views: 0.3ms | ActiveRecord: 0.6ms | Allocations: 518)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Otto Barton"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Otto Barton"], ["password_digest", "$2a$12$SgDREEGZQw79UtowCgbAfeFjNmDMz09LEAgEIZ/UTVgF7jVi7zOyq"], ["session_token", "nOpO1nRYy1imZQlVQT5y6A"], ["created_at", "2021-01-12 00:14:26.699180"], ["updated_at", "2021-01-12 00:14:26.699180"]]
+  [1m[35m (9.7ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:26 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Otto Barton", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Otto Barton"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Otto Barton"], ["id", 84], ["LIMIT", 1]]
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "DALetLi42bv7wQgc_sTzzA"], ["updated_at", "2021-01-12 00:14:27.010983"], ["id", 84]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.3ms | Allocations: 157)
+Completed 200 OK in 306ms (Views: 0.9ms | ActiveRecord: 17.5ms | Allocations: 1497)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:27 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 502)
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Collin Harvey"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("username", "password_digest", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["username", "Collin Harvey"], ["password_digest", "$2a$12$LhoszETJToSxaOED2ny/6OgQWzzVagSDoN4HgJe/ng/FArTLLSvlK"], ["session_token", "9Gn4jHRwgAShZP7JL8MRQg"], ["created_at", "2021-01-12 00:14:27.334985"], ["updated_at", "2021-01-12 00:14:27.334985"]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:27 -0500
+Processing by Api::SessionsController#create as JSON
+  Parameters: {"user"=>{"username"=>"Collin Harvey", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "Collin Harvey"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "Collin Harvey"], ["id", 85], ["LIMIT", 1]]
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "session_token" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["session_token", "eRj3E-EuTXsw_ZEprp-wsA"], ["updated_at", "2021-01-12 00:14:27.648776"], ["id", 85]]
+  [1m[35m (15.1ms)[0m  [1m[35mCOMMIT[0m
+  Rendering api/users/show.json.jbuilder
+  Rendered api/users/_user.json.jbuilder (Duration: 0.1ms | Allocations: 26)
+  Rendered api/users/show.json.jbuilder (Duration: 0.4ms | Allocations: 157)
+Completed 200 OK in 302ms (Views: 0.9ms | ActiveRecord: 16.7ms | Allocations: 1497)
+Started DELETE "/api/sessions" for 127.0.0.1 at 2021-01-11 19:14:27 -0500
+Processing by Api::SessionsController#destroy as JSON
+  Parameters: {"id"=>nil}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."session_token" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.3ms | ActiveRecord: 0.6ms | Allocations: 513)
