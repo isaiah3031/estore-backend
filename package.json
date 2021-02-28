@@ -2,7 +2,7 @@
   "name": "etsy",
   "scripts": {
     "build": "yarn --cwd client && yarn --cwd client build",
-    "deploy": "cp -a ../client/build/. public/",
+    "deploy": "cp -a client/build/. public/",
     "heroku-postbuild": "yarn build && yarn deploy"
   },
   "dependencies": {},
