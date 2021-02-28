@@ -5,8 +5,8 @@
     "deploy": "cp -a ../client/build/. public/",
     "heroku-postbuild": "yarn build && yarn deploy"
   },
-  "devDependencies": {},
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@rails/webpacker": "^6.0.0-beta.6",
     "jquery": "^3.5.1",
     "webpack": "^5.24.2",
